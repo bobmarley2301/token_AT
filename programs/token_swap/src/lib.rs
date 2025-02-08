@@ -36,8 +36,20 @@ fn process_instruction(
     let action = instruction_data[0];
 
     match action {
-        0 => buy_tokens(user_account, token_account, sol_account, usdt_account, token_program),
-        1 => sell_tokens(user_account, token_account, sol_account, usdt_account, token_program),
+        0 => buy_tokens(
+            user_account,
+            token_account,
+            sol_account,
+            usdt_account,
+            token_program,
+        ),
+        1 => sell_tokens(
+            user_account,
+            token_account,
+            sol_account,
+            usdt_account,
+            token_program,
+        ),
         _ => Err(ProgramError::InvalidInstructionData),
     }
 }
@@ -51,9 +63,9 @@ fn buy_tokens(
 ) -> ProgramResult {
     msg!("User is buying tokens");
 
-    let amount = 10_000; 
+    let amount = 10_000;
     let sol_balance = sol_account.lamports();
-    let usdt_balance = TokenAccount::unpack(&usdt_account.data.borrow())?.amount; 
+    let usdt_balance = TokenAccount::unpack(&usdt_account.data.borrow())?.amount;
 
     if sol_balance < amount && usdt_balance < amount {
         return Err(ProgramError::InsufficientFunds);
@@ -117,9 +129,8 @@ fn sell_tokens(
         return Err(ProgramError::InsufficientFunds);
     }
 
-    let amount = 10_000; 
+    let amount = 10_000;
 
-    
     let token_transfer_instruction = token_instruction::transfer(
         token_program.key,
         token_account.key,
